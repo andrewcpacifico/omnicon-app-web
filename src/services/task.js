@@ -23,6 +23,8 @@ const TASKS = [
 
 export default {
   getAll() {
-    return TASKS;
+    return new Promise((resolve) => {
+      setTimeout(() => { resolve(TASKS); }, 3000);
+    });
   },
 };
