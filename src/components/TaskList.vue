@@ -2,7 +2,7 @@
   <div>
     <v-subheader>Teste</v-subheader>
     <v-list v-if="status === 'loaded'">
-      <v-list-item v-for="task  in tasks" v-bind:key="task.id">{{ task.name }}</v-list-item>
+      <v-list-item v-for="task  in tasks" v-bind:key="task._id">{{ task.title }}</v-list-item>
     </v-list>
 
     <v-progress-circular class="loader"
