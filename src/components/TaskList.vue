@@ -4,9 +4,11 @@
     <v-list v-if="status === 'loaded'">
       <v-list-item v-for="task  in tasks" v-bind:key="task.id">{{ task.name }}</v-list-item>
     </v-list>
-    <v-progress-circular
+
+    <v-progress-circular class="loader"
       v-else
       indeterminate
+      size="50"
     ></v-progress-circular>
   </div>
 </template>
@@ -27,3 +29,12 @@ export default {
   },
 };
 </script>
+
+<style scoped>
+  .loader {
+    left: 50%;
+    transform: translate(-50%, -50%);
+    position: absolute;
+    top: 50%;
+  }
+</style>
