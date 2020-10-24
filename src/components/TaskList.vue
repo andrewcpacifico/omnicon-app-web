@@ -1,3 +1,22 @@
+<style scoped>
+  .loader {
+    left: 50%;
+    transform: translate(-50%, -50%);
+    position: absolute;
+    top: 50%;
+  }
+
+  .list-wrapper {
+    align-items: center;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .scroll-loader {
+    margin-top: 20px;
+  }
+</style>
+
 <template>
   <div>
     <v-subheader>Teste</v-subheader>
@@ -7,6 +26,7 @@
       </v-list>
 
       <v-progress-circular
+        v-if="hasNext"
         class="scroll-loader"
         ref="scrollLoader"
         indeterminate
@@ -33,15 +53,12 @@ export default {
     tasks: [],
     status: 'loading',
     loadingData: false,
+    hasNext: true,
   }),
-  async beforeCreate() {
-    this.loadingData = true;
-    const tasks = await taskService.getAll();
-    this.$data.tasks = tasks;
+  async created() {
+    await this.loadTasks();
     this.status = 'loaded';
-    this.loadingData = false;
-  },
-  created() {
+
     this.handleDebouncedScroll = debounce(this.handleScroll, 300);
     window.addEventListener('scroll', this.handleDebouncedScroll);
   },
@@ -50,43 +67,34 @@ export default {
   },
   methods: {
     handleScroll() {
-      if (this.loadingData) {
+      if (this.loadingData || !this.hasNext) {
         return;
       }
 
       const { scrollLoader } = this.$refs;
-      const { top } = scrollLoader.$el.getBoundingClientRect();
+      if (scrollLoader) {
+        const { top } = scrollLoader.$el.getBoundingClientRect();
 
-      if (top <= window.innerHeight - SCROLL_MARGIN) {
-        this.loadMoreData();
+        if (top <= window.innerHeight - SCROLL_MARGIN) {
+          this.loadTasks();
+        }
       }
     },
-    loadMoreData() {
-      console.log('loading data...');
+    async loadTasks() {
       this.loadingData = true;
-      setTimeout(() => {
-        this.loadingData = false;
-      }, 3000);
+      if (!this.tasksLoader) {
+        this.tasksLoader = await taskService.getAll();
+      } else {
+        this.tasksLoader = await this.tasksLoader.next();
+      }
+      this.loadingData = false;
+
+      const { tasks, hasNext } = this.tasksLoader;
+      this.hasNext = hasNext;
+      this.$data.tasks.push(...tasks);
+
+      setTimeout(this.handleScroll);
     },
   },
 };
 </script>
-
-<style scoped>
-  .loader {
-    left: 50%;
-    transform: translate(-50%, -50%);
-    position: absolute;
-    top: 50%;
-  }
-
-  .list-wrapper {
-    align-items: center;
-    display: flex;
-    flex-direction: column;
-  }
-
-  .scroll-loader {
-    margin-top: 20px;
-  }
-</style>
