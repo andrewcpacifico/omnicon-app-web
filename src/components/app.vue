@@ -10,13 +10,13 @@
     </v-app-bar>
 
     <v-main>
-      <TaskList/>
+      <task-list/>
     </v-main>
   </v-app>
 </template>
 
 <script>
-import TaskList from './components/TaskList.vue';
+import TaskList from './task-list.vue';
 
 export default {
   name: 'App',

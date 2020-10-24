@@ -48,7 +48,7 @@ import taskService from '../services/task';
 const SCROLL_MARGIN = 5;
 
 export default {
-  name: 'Tasklist',
+  name: 'TaskList',
   data: () => ({
     tasks: [],
     status: 'loading',
