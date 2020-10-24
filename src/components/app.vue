@@ -4,7 +4,6 @@
       app
       color="primary"
       dark
-      hide-on-scroll
     >
       <v-toolbar-title>Omnicon</v-toolbar-title>
     </v-app-bar>
