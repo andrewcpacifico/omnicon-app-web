@@ -43,7 +43,6 @@
 
 <script>
 import debounce from 'lodash.debounce';
-import taskService from '../services/task';
 
 const SCROLL_MARGIN = 5;
 
@@ -81,6 +80,8 @@ export default {
       }
     },
     async loadTasks() {
+      const { taskService } = this.$dependencyContainer;
+
       this.loadingData = true;
       if (!this.tasksLoader) {
         this.tasksLoader = await taskService.getAll();

@@ -10,6 +10,7 @@
   },
   "dependencies": {
     "@mdi/font": "^3.6.95",
+    "awilix": "^4.2.7",
     "axios": "^0.20.0",
     "core-js": "^3.6.5",
     "lodash.debounce": "^4.0.8",
